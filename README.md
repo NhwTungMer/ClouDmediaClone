@@ -2,11 +2,12 @@ git clone https
 
 cd client : npm i
 
-----
 npm start
 
+---------------
+
 cd serve : npm i
-----
+
 npm start 
 
 
