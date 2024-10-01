@@ -21,16 +21,16 @@ function App() {
           <Routes>
             {/* <Route path="/" element={<LoginPage />} /> */}
             <Route
-              path="/"
-              element={isAuth ? <HomePage /> : <Navigate to="/" />}
+              path="/" 
+              element={ <HomePage />}
             />
             <Route
               path="/profile/:userId"
-              element={isAuth ? <ProfilePage /> : <Navigate to="/" />}
+              element={<ProfilePage />}
             />
              <Route
               path="/posts/share/:postId"
-              element={isAuth ? <PostAction /> : <Navigate to="/" />}
+              element={ <PostAction />}
             />
           </Routes>
         </ThemeProvider>
