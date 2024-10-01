@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import { themeSettings } from "./theme";
-
+import PostAction from "./scenes/widgets/PostAction"
 function App() {
   const mode = useSelector((state) => state.mode);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
@@ -19,14 +19,18 @@ function App() {
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Routes>
-            <Route path="/" element={<LoginPage />} />
+            {/* <Route path="/" element={<LoginPage />} /> */}
             <Route
-              path="/home"
+              path="/"
               element={isAuth ? <HomePage /> : <Navigate to="/" />}
             />
             <Route
               path="/profile/:userId"
               element={isAuth ? <ProfilePage /> : <Navigate to="/" />}
+            />
+             <Route
+              path="/posts/share/:postId"
+              element={isAuth ? <PostAction /> : <Navigate to="/" />}
             />
           </Routes>
         </ThemeProvider>

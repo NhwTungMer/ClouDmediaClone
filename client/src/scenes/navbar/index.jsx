@@ -56,7 +56,7 @@ const Navbar = () => {
             },
           }}
         >
-          ClouD Media
+          ClouD
         </Typography>
         {isNonMobileScreens && (
           <FlexBetween

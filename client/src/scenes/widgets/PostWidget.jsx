@@ -11,7 +11,8 @@ import WidgetWrapper from "components/WidgetWrapper";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPost } from "state";
-
+import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
 const PostWidget = ({
   postId,
   postUserId,
@@ -33,7 +34,19 @@ const PostWidget = ({
   const { palette } = useTheme();
   const main = palette.neutral.main;
   const primary = palette.primary.main;
+  
+  const sharePost = (postId) => {
+    const frontendUrl = `http://localhost:3000/posts/share/${postId}`;
 
+    navigator.clipboard.writeText(frontendUrl)
+      .then(() => {
+        toast.success('Link copied to clipboard!');
+      })
+      .catch(err => {
+        toast.error('Failed to copy link.');
+        
+      });
+  };
   const patchLike = async () => {
     const response = await fetch(`http://localhost:3001/posts/${postId}/like`, {
       method: "PATCH",
@@ -82,6 +95,7 @@ const PostWidget = ({
 
           <FlexBetween gap="0.3rem">
             <IconButton onClick={() => setIsComments(!isComments)}>
+            <ToastContainer />
               <ChatBubbleOutlineOutlined />
             </IconButton>
             <Typography>{comments.length}</Typography>
@@ -89,7 +103,8 @@ const PostWidget = ({
         </FlexBetween>
 
         <IconButton>
-          <ShareOutlined />
+          <ShareOutlined onClick={() => sharePost(postId)}>
+          </ShareOutlined>
         </IconButton>
       </FlexBetween>
       {isComments && (
@@ -97,7 +112,7 @@ const PostWidget = ({
           {comments.map((comment, i) => (
             <Box key={`${name}-${i}`}>
               <Divider />
-              <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
+              <Typography sx={{ color: main, m: "1.5rem 0", pl: "1rem" }}>
                 {comment}
               </Typography>
             </Box>
