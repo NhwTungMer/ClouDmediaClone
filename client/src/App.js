@@ -19,18 +19,18 @@ function App() {
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Routes>
-            {/* <Route path="/" element={<LoginPage />} /> */}
+            <Route path="/" element={<LoginPage />} />
             <Route
-              path="/" 
-              element={ <HomePage />}
+              path="/home"
+              element={isAuth ? <HomePage /> : <Navigate to="/" />}
             />
             <Route
               path="/profile/:userId"
-              element={<ProfilePage />}
+              element={isAuth ? <ProfilePage /> : <Navigate to="/" />}
             />
              <Route
               path="/posts/share/:postId"
-              element={ <PostAction />}
+              element={isAuth ? <PostAction /> : <Navigate to="/" />}
             />
           </Routes>
         </ThemeProvider>
