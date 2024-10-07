@@ -15,7 +15,7 @@ const PostAction = () => {
   const token = useSelector((state) => state.token);
 
   const patchLike = async () => {
-    const response = await fetch(`http://localhost:3001/posts/${postId}/like`, {
+    const response = await fetch(`https://cloudmediaclone-demo-t.onrender.com/posts/${postId}/like`, {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -31,7 +31,7 @@ const PostAction = () => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/posts/share/${postId}`);
+        const response = await axios.get(`https://cloudmediaclone-demo-t.onrender.com/posts/share/${postId}`);
         dispatch(setPost({ post: response.data }));
         setLoading(false);
       } catch (error) {
@@ -66,7 +66,7 @@ const PostAction = () => {
           
           alt="post"
           style={{ display: 'block', margin: '0.75rem auto', borderRadius: '0.75rem' }}
-          src={`http://localhost:3001/assets/${post.picturePath}`}
+          src={`https://cloudmediaclone-demo-t.onrender.com/assets/${post.picturePath}`}
         />
       )}
       <PostWidget gap="0.3rem" 
