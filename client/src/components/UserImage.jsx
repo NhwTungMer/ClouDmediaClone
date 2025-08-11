@@ -1,4 +1,5 @@
 import { Box } from "@mui/material";
+import { getAssetUrl } from "../routes";
 
 const UserImage = ({ image, size = "60px" }) => {
   return (
@@ -8,7 +9,7 @@ const UserImage = ({ image, size = "60px" }) => {
         width={size}
         height={size}
         alt="user"
-        src={`https://cloudmediaclone-demo-t.onrender.com/assets/${image}`}
+        src={getAssetUrl(image)}
       />
     </Box>
   );

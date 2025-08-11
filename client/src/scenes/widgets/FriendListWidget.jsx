@@ -4,6 +4,7 @@ import WidgetWrapper from "components/WidgetWrapper";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setFriends } from "state";
+import { URL_USER_FRIENDS } from "../../routes";
 
 const FriendListWidget = ({ userId }) => {
   const dispatch = useDispatch();
@@ -13,7 +14,7 @@ const FriendListWidget = ({ userId }) => {
 
   const getFriends = async () => {
     const response = await fetch(
-      `https://cloudmediaclone-demo-t.onrender.com/users/${userId}/friends`,
+      URL_USER_FRIENDS(userId),
       {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },

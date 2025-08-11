@@ -30,6 +30,27 @@ export const getUserFriends = async (req, res) => {
   }
 };
 
+export const searchUsers = async (req, res) => {
+  try {
+    const { query } = req.query;
+    
+    if (!query || query.trim().length < 2) {
+      return res.status(400).json({ message: "Search query must be at least 2 characters" });
+    }
+
+    const users = await User.find({
+      $or: [
+        { firstName: { $regex: query, $options: 'i' } },
+        { lastName: { $regex: query, $options: 'i' } }
+      ]
+    }).limit(10).select('_id firstName lastName occupation location picturePath');
+
+    res.status(200).json(users);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 /* UPDATE */
 export const addRemoveFriend = async (req, res) => {
   try {

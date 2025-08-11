@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "state";
 import PostWidget from "./PostWidget";
+import { URL_POSTS_ALL, URL_POSTS_BY_USER } from "../../routes";
 
 const PostsWidget = ({ userId, isProfile = false }) => {
   const dispatch = useDispatch();
@@ -9,7 +10,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
   const token = useSelector((state) => state.token);
 
   const getPosts = async () => {
-    const response = await fetch("https://cloudmediaclone-demo-t.onrender.com/posts", {
+    const response = await fetch(URL_POSTS_ALL, {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -19,7 +20,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
 
   const getUserPosts = async () => {
     const response = await fetch(
-      `https://cloudmediaclone-demo-t.onrender.com/posts/${userId}/posts`,
+      URL_POSTS_BY_USER(userId),
       {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },

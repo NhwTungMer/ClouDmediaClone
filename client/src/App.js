@@ -7,7 +7,10 @@ import { useSelector } from "react-redux";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import { themeSettings } from "./theme";
-import PostAction from "./scenes/widgets/PostAction"
+import PostAction from "./scenes/widgets/PostAction";
+import { ToastContainer, Bounce } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 function App() {
   const mode = useSelector((state) => state.mode);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
@@ -33,6 +36,29 @@ function App() {
               element={isAuth ? <PostAction /> : <Navigate to="/" />}
             />
           </Routes>
+          <ToastContainer
+            position="top-right"
+            autoClose={2500}
+            hideProgressBar={false}
+            newestOnTop
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            limit={3}
+            theme={mode === 'dark' ? 'dark' : 'light'}
+            transition={Bounce}
+            toastStyle={{
+              borderRadius: 12,
+              background: theme.palette.background.paper,
+              color: theme.palette.text.primary,
+              boxShadow: theme.shadows[4],
+            }}
+            progressStyle={{
+              background: theme.palette.primary.main,
+            }}
+          />
         </ThemeProvider>
       </BrowserRouter>
     </div>

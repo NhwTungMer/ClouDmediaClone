@@ -1,6 +1,7 @@
 import { Typography, useTheme } from "@mui/material";
 import FlexBetween from "components/FlexBetween";
 import WidgetWrapper from "components/WidgetWrapper";
+import { URL_ASSET_INFO4 } from "../../routes";
 
 const AdvertWidget = () => {
   const { palette } = useTheme();
@@ -20,16 +21,15 @@ const AdvertWidget = () => {
         width="100%"
         height="auto"
         alt="advert"
-        src="https://cloudmediaclone-demo-t.onrender.com/assets/info4.jpeg"
+        src={URL_ASSET_INFO4}
         style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }}
       />
       <FlexBetween>
-        <Typography color={main}>MikaCosmetics</Typography>
-        <Typography color={medium}>mikacosmetics.com</Typography>
+        <Typography color={main}>tungdevvv17</Typography>
+        <Typography color={medium}>tungdevv17.com</Typography>
       </FlexBetween>
       <Typography color={medium} m="0.5rem 0">
-        Your pathway to stunning and immaculate beauty and made sure your skin
-        is exfoliating skin and shining like light.
+        contact me to sp ads.
       </Typography>
     </WidgetWrapper>
   );

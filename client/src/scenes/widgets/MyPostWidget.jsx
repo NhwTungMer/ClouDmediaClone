@@ -24,6 +24,7 @@ import WidgetWrapper from "components/WidgetWrapper";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "state";
+import { URL_POSTS_ALL } from "../../routes";
 
 const MyPostWidget = ({ picturePath }) => {
   const dispatch = useDispatch();
@@ -46,7 +47,7 @@ const MyPostWidget = ({ picturePath }) => {
       formData.append("picturePath", image.name);
     }
 
-    const response = await fetch(`https://cloudmediaclone-demo-t.onrender.com/posts`, {
+    const response = await fetch(URL_POSTS_ALL, {
       method: "POST",
       headers: { Authorization: `Bearer ${token}` },
       body: formData,

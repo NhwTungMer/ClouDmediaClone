@@ -19,7 +19,7 @@ export const createPost = async (req, res) => {
     });
     await newPost.save();
 
-    const post = await Post.find();
+    const post = await Post.find().sort({ createdAt: -1 });
     res.status(201).json(post);
   } catch (err) {
     res.status(409).json({ message: err.message });
@@ -29,7 +29,7 @@ export const createPost = async (req, res) => {
 /* READ */
 export const getFeedPosts = async (req, res) => {
   try {
-    const post = await Post.find();
+    const post = await Post.find().sort({ createdAt: -1 });
     res.status(200).json(post);
   } catch (err) {
     res.status(404).json({ message: err.message });
@@ -39,7 +39,7 @@ export const getFeedPosts = async (req, res) => {
 export const getUserPosts = async (req, res) => {
   try {
     const { userId } = req.params;
-    const post = await Post.find({ userId });
+    const post = await Post.find({ userId }).sort({ createdAt: -1 });
     res.status(200).json(post);
   } catch (err) {
     res.status(404).json({ message: err.message });
@@ -66,11 +66,14 @@ export const likePost = async (req, res) => {
       { new: true }
     );
 
-    res.status(200).json(updatedPost);
+    // Return all posts sorted by newest first
+    const allPosts = await Post.find().sort({ createdAt: -1 });
+    res.status(200).json(allPosts);
   } catch (err) {
     res.status(404).json({ message: err.message });
   }
 };
+
 export const sharePost = async (req, res) => {
   try {
       const postId = req.params.id;
@@ -84,8 +87,103 @@ export const sharePost = async (req, res) => {
       post.shares += 1;
       await post.save();
 
-      res.status(200).json({ message: 'Post shared successfully', post });
+      // Return all posts sorted by newest first
+      const allPosts = await Post.find().sort({ createdAt: -1 });
+      res.status(200).json(allPosts);
   } catch (error) {
       res.status(500).json({ message: 'Server error', error });
+  }
+};
+
+/* COMMENT OPERATIONS */
+export const addComment = async (req, res) => {
+  try {
+    const { postId } = req.params;
+    const { text } = req.body;
+    const userId = req.user.id;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    const newComment = {
+      userId: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      userPicturePath: user.picturePath,
+      text,
+      createdAt: new Date(),
+    };
+
+    post.comments.push(newComment);
+    await post.save();
+
+    const allPosts = await Post.find().sort({ createdAt: -1 });
+    res.status(200).json(allPosts);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+export const deleteComment = async (req, res) => {
+  try {
+    const { postId, commentId } = req.params;
+    const userId = req.user.id;
+
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    const commentIndex = post.comments.findIndex(
+      (comment) => comment._id.toString() === commentId
+    );
+
+    if (commentIndex === -1) {
+      return res.status(404).json({ message: "Comment not found" });
+    }
+
+    const comment = post.comments[commentIndex];
+    if (String(comment.userId) !== String(userId)) {
+      return res.status(403).json({ message: "You can only delete your own comments" });
+    }
+
+    post.comments.splice(commentIndex, 1);
+    await post.save();
+
+    const allPosts = await Post.find().sort({ createdAt: -1 });
+    res.status(200).json(allPosts);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+/* DELETE */
+export const deletePost = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const requesterUserId = req.user?.id;
+
+    const post = await Post.findById(id);
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    if (!requesterUserId || String(post.userId) !== String(requesterUserId)) {
+      return res.status(403).json({ message: "You are not allowed to delete this post" });
+    }
+
+    await Post.findByIdAndDelete(id);
+
+    const remainingPosts = await Post.find().sort({ createdAt: -1 });
+    res.status(200).json(remainingPosts);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 };

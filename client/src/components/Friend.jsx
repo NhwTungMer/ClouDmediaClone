@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { setFriends } from "state";
 import FlexBetween from "./FlexBetween";
 import UserImage from "./UserImage";
+import { URL_USER_FRIEND_ACTION } from "../routes";
 
 const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
   const dispatch = useDispatch();
@@ -23,7 +24,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
 
   const patchFriend = async () => {
     const response = await fetch(
-      `https://cloudmediaclone-demo-t.onrender.com/users/${_id}/${friendId}`,
+      URL_USER_FRIEND_ACTION(_id, friendId),
       {
         method: "PATCH",
         headers: {

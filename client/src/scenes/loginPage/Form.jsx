@@ -15,8 +15,9 @@ import { useDispatch } from "react-redux";
 import { setLogin } from "state";
 import Dropzone from "react-dropzone";
 import FlexBetween from "components/FlexBetween";
+import { URL_AUTH_REGISTER, URL_AUTH_LOGIN } from "../../routes";
 
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 
 const registerSchema = yup.object().shape({
@@ -67,7 +68,7 @@ const Form = () => {
     formData.append("picturePath", values.picture.name);
 
     const savedUserResponse = await fetch(
-      "https://cloudmediaclone-demo-t.onrender.com/auth/register",
+      URL_AUTH_REGISTER,
       {
         method: "POST",
         body: formData,
@@ -82,7 +83,7 @@ const Form = () => {
   };
 
   const login = async (values, onSubmitProps) => {
-    const loggedInResponse = await fetch("https://cloudmediaclone-demo-t.onrender.com/auth/login"  , {
+    const loggedInResponse = await fetch(URL_AUTH_LOGIN, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),

@@ -11,7 +11,6 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import {
-  Search,
   Message,
   DarkMode,
   LightMode,
@@ -24,6 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setMode, setLogout } from "state";
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "components/FlexBetween";
+import SearchUser from "components/SearchUser";
 
 const Navbar = () => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
@@ -58,19 +58,7 @@ const Navbar = () => {
         >
           ClouD
         </Typography>
-        {isNonMobileScreens && (
-          <FlexBetween
-            backgroundColor={neutralLight}
-            borderRadius="9px"
-            gap="3rem"
-            padding="0.1rem 1.5rem"
-          >
-            <InputBase placeholder="Search..." />
-            <IconButton>
-              <Search />
-            </IconButton>
-          </FlexBetween>
-        )}
+        {isNonMobileScreens && <SearchUser />}
       </FlexBetween>
 
       {/* DESKTOP NAV */}

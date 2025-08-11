@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box, Typography, CircularProgress } from '@mui/material';
-import { setPost } from 'state';
+import { setPosts } from 'state';
 import PostWidget from './PostWidget';
 import axios from 'axios';
+import { URL_POST_LIKE, URL_POST_SHARE, getAssetUrl } from '../../routes';
 
 const PostAction = () => {
   const { postId } = useParams();
@@ -15,7 +16,7 @@ const PostAction = () => {
   const token = useSelector((state) => state.token);
 
   const patchLike = async () => {
-    const response = await fetch(`https://cloudmediaclone-demo-t.onrender.com/posts/${postId}/like`, {
+    const response = await fetch(URL_POST_LIKE(postId), {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -23,16 +24,16 @@ const PostAction = () => {
       },
       body: JSON.stringify({ userId: loggedInUserId }),
     });
-    const updatedPost = await response.json();
-    dispatch(setPost({ post: updatedPost }));
+    const updatedPosts = await response.json();
+    dispatch(setPosts({ posts: updatedPosts }));
   };
 
 
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await axios.get(`https://cloudmediaclone-demo-t.onrender.com/posts/share/${postId}`);
-        dispatch(setPost({ post: response.data }));
+        const response = await axios.get(URL_POST_SHARE(postId));
+        dispatch(setPosts({ post: response.data }));
         setLoading(false);
       } catch (error) {
         console.error('Error fetching post', error);
@@ -66,7 +67,7 @@ const PostAction = () => {
           
           alt="post"
           style={{ display: 'block', margin: '0.75rem auto', borderRadius: '0.75rem' }}
-          src={`https://cloudmediaclone-demo-t.onrender.com/assets/${post.picturePath}`}
+          src={getAssetUrl(post.picturePath)}
         />
       )}
       <PostWidget gap="0.3rem" 
